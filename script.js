@@ -137,28 +137,24 @@ const homeworldsLowercase = homeworldsUnique.map((character) =>
   character.toLowerCase()
 );
 const homeworlds = homeworldsLowercase;
-
 // donguyla radiolari bastirma
 const radio_container = document.querySelector(".radio-container");
 
 function showRadioBoxes() {
   homeworlds.forEach((homeworld) => {
-    const radio_box = document.createElement("div");
-    radio_box.classList.add("radio");
-
-    const input = document.createElement("input");
-    input.type = "radio";
-    input.id = "homeworld-" + homeworld;
-    input.value = homeworld;
-    input.classList.add("radio-box");
-
-    const label = document.createElement("label");
-    label.htmlFor = "homeworld-" + homeworld;
-    label.innerText = homeworld;
-
-    radio_container.appendChild(radio_box);
-    radio_box.appendChild(input);
-    radio_box.appendChild(label);
+    radio_container.innerHTML += `
+    <div class="radio">
+        <input 
+            type="radio" 
+            id="homeworld-${homeworld}" 
+            value="${homeworld}" 
+            class="radio-box">
+        <label 
+            for="homeworld-${homeworld}">
+            ${homeworld}
+        </label>
+    </div>
+`;
   });
 }
 //radio butonlarini goster
@@ -172,34 +168,19 @@ function renderCharacters(radio) {
 
   data[0].characters.forEach((element) => {
     //eger checkboxtaki value dongumuzde donen karakterlerin value' su ile ayniysa karakteri bastir
-    if (element.homeworld === radio.value) {
-      const card = document.createElement("div");
-      card.classList.add("card");
+    console.log(element.homeworld);
 
-      const cardContent = document.createElement("div");
-      cardContent.classList.add("card-content");
-
-      const h4 = document.createElement("h4");
-      h4.classList.add("name");
-      h4.innerText = `Name: ${element.name}`;
-
-      const h4_2 = document.createElement("h4");
-      h4_2.classList.add("homeworld");
-      h4_2.innerText = `Homeworld: ${element.homeworld}`;
-
-      const cardImage = document.createElement("div");
-      cardImage.classList.add("card-image");
-
-      const img = document.createElement("img");
-      img.src = element.pic;
-
-      cardContent.appendChild(h4);
-      cardContent.appendChild(h4_2);
-      card.appendChild(cardContent);
-      card.appendChild(cardImage);
-      cardImage.appendChild(img);
-
-      cardContainer.appendChild(card);
+    const homeworld = element.homeworld ?? "other";
+    if (homeworld.toLowerCase() === radio.value) {
+      cardContainer.innerHTML += `
+                <div class="card">
+                    <div class="card-content">
+                        <h4 class="name">Name: ${element.name}</h4>
+                        <h4 class="homeworld">Homeworld: ${element.homeworld}</h4>
+                    </div>
+                    <div class="card-image"><img
+                        src="${element.pic}"></div>
+                    </div>`;
     }
   });
 }
